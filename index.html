@@ -405,7 +405,7 @@
                 // 2. ค้นหาในข้อมูลทั้งหมด ว่าแถวไหนมี name ตรงกับใน URL
                 // ใช้ .toLowerCase() ทั้งคู่เพื่อป้องกันการพิมพ์ตัวเล็ก-ใหญ่ผิด
                 plant = data.find(item => 
-                    item.name.trin().toLowerCase() === plantNameQuery.trin().toLowerCase()
+                    item.name.trim().toLowerCase() === plantNameQuery.trim().toLowerCase()
             );
         }
 
