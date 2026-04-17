@@ -400,7 +400,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const plantNameQuery = urlParams.get('name'); // ดึงค่าจาก ?name=...
 
-            if (!plantNameQuery) {
+            if (!plantNameQuery || plantNameQuery.trim() === '') {
                 alert('⚠️ กรุณาระบุชื่อต้นไม้ใน URL');
                 document.getElementById('p-name').innerText = '⚠️ กรุณาระบุชื่อต้นไม้ใน URL';
             return;
