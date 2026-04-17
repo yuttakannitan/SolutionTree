@@ -84,6 +84,8 @@
             object-fit: cover;
             position: relative;
             z-index: 1;
+            image-rendering: -webkit-optimize-contrast; /* Safari */
+            image-rendering: crisp-edges;
         }
 
         .content { padding: 22px 20px 40px; }
@@ -176,7 +178,7 @@
         }
         .gallery-inner { display: flex; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
         .gallery-slide { flex: 0 0 100%; display: block; text-decoration: none; position: relative; }
-        .gallery-slide img { width: 100%; height: 180px; object-fit: cover; display: block; }
+        .gallery-slide img { width: 100%; height: 180px; object-fit: cover; display: block; image-rendering: -webkit-optimize-contrast;}
 
         .gallery-dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
         .gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-pale); transition: background 0.3s, transform 0.3s; }
@@ -319,15 +321,26 @@
         //let fileId = '';
         const m1 = url.match(/\/file\/d\/([^\/\?&]+)/);
         const m2 = url.match(/[?&]id=([^&]+)/);
-
-        if (m1) {
-            return `https://drive.google.com/thumbnail?id=${m1[1]}&sz=1200`;
-        } 
-        if (m2) {
-            return `https://drive.google.com/thumbnail?id=${m1[1]}&sz=1200`;
+        const id = m1 ? m1[1] : m2 ? m2[1] : null;
+        if (id) {
+            return `https://lh3.googleusercontent.com/d/${id}`;
+            }
         }
-        return url;
+
+    function setImgWithFallback(imgEl, id) {
+    const formats = [
+        `https://drive.google.com/thumbnail?id=${id}&sz=w1600-h1600`,
+        `https://lh3.googleusercontent.com/d/${id}`,
+        `https://drive.google.com/uc?export=view&id=${id}`,
+    ];
+    let i = 0;
+    function tryNext() {
+        if (i >= formats.length) return;
+        imgEl.src = formats[i++];
     }
+    imgEl.onerror = tryNext;
+    tryNext();
+}
 
 
         //const m1 = url.match(/\/file\/d\/([^\/\?&]+)/);
@@ -351,7 +364,7 @@
         galleryTotal   = urls.length;
         galleryCurrent = 0;
 
-        const GALLERY_LINK = 'https://www.facebook.com/share/1ap7NP1M4N/?mibextid=wwXIfr';
+        const GALLERY_LINK = 'https://www.facebook.com/genius.tagtree/';
 
         urls.forEach((rawUrl, i) => {
             const url   = convertDriveUrl(rawUrl); // ← แปลงก่อนใช้
@@ -363,7 +376,13 @@
             slide.rel = 'noopener';
 
             const img = document.createElement('img');
-            img.src = url;
+            const mm = rawUrl.match(/\/file\/d\/([^\/\?&]+)/) || rawUrl.match(/[?&]id=([^&]+)/);
+            const fid = mm ? mm[1] : null;
+            if (fid) {
+                setImgWithFallback(img, fid);
+            } else {
+                img.src = rawUrl;
+            }
             img.alt = `ภาพที่ ${i + 1}`;
             slide.appendChild(img);
             inner.appendChild(slide);
@@ -415,7 +434,7 @@
                 document.getElementById('p-name').innerText = `❌ ไม่พบต้นไม้ชื่อ "${plantNameQuery}"`;
             return;
             }
-            
+
             // ① ประกาศตัวแปรทั้งหมดก่อน
             const plantName = plant.name       || '';
             const appName   = plant.name_store || 'GreenHub';
@@ -430,7 +449,13 @@
             // ④ รูป Hero — แปลง Drive URL ก่อนใส่ src
             if (plant.image) {
                 const heroImg = document.getElementById('hero-img');
-                heroImg.src   = convertDriveUrl(plant.image); // ← แปลงที่นี่
+                const m1 = plant.image.match(/\/file\/d\/([^\/\?&]+)/);
+                const m2 = plant.image.match(/[?&]id=([^&]+)/);
+                const id = m1 ? m1[1] : m2 ? m2[1] : null;
+                    if (id) {
+                        heroImg.style.display = 'block';
+                        setImgWithFallback(heroImg, id);
+                    }
                 heroImg.style.display = 'block';
             }
 
