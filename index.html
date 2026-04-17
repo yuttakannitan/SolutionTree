@@ -401,6 +401,7 @@
             const plantNameQuery = urlParams.get('name'); // ดึงค่าจาก ?name=...
 
             if (!plantNameQuery) {
+                alert('⚠️ กรุณาระบุชื่อต้นไม้ใน URL');
                 document.getElementById('p-name').innerText = '⚠️ กรุณาระบุชื่อต้นไม้ใน URL';
             return;
             }
