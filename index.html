@@ -410,6 +410,7 @@
             );
 
             if (!plant) {
+                alert(`❌ ไม่พบต้นไม้ชื่อ "${plantNameQuery}"`);
                 document.getElementById('p-name').innerText = `❌ ไม่พบต้นไม้ชื่อ "${plantNameQuery}"`;
             return;
             }
