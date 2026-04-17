@@ -415,30 +415,7 @@
                 document.getElementById('p-name').innerText = `❌ ไม่พบต้นไม้ชื่อ "${plantNameQuery}"`;
             return;
             }
-
-            //let plant;
-            //if (plantNameQuery) {
-                // 2. ค้นหาในข้อมูลทั้งหมด ว่าแถวไหนมี name ตรงกับใน URL
-                // ใช้ .toLowerCase() ทั้งคู่เพื่อป้องกันการพิมพ์ตัวเล็ก-ใหญ่ผิด
-                //plant = data.find(item => 
-                    //item.name.trim().toLowerCase() === plantNameQuery.trim().toLowerCase()
-            //);
             
-            //3. ถ้าหาไม่เจอ หรือไม่ได้ระบุชื่อ ให้เอาตัวแรกเป็น Default
-            //if (!plant) {
-                //plant = data[0];
-                //console.warn("ไม่พบข้อมูลต้นไม้ที่ระบุ หรือไม่ได้ระบุชื่อใน URL");
-            //}
-            //if (!plantNameQuery) {
-                //document.getElementById('p-name').innerText = '⚠️ กรุณาระบุชื่อต้นไม้ใน URL';
-                //return; // หยุดทำงาน ไม่โหลดข้อมูล
-            //}
-
-            //if (!plant) {
-                //document.getElementById('p-name').innerText = `❌ ไม่พบต้นไม้ชื่อ "${plantNameQuery}"`;
-                //return; // หยุดทำงาน ไม่โหลดข้อมูล
-            //}
-
             // ① ประกาศตัวแปรทั้งหมดก่อน
             const plantName = plant.name       || '';
             const appName   = plant.name_store || 'GreenHub';
