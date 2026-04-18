@@ -407,7 +407,8 @@
     }
 
     /* ── Fetch from Google Sheet ── */
-    const SHEET_ID   = '12i7W1O8MJ_5WljO2g3tcPPWE_eTsWHQ5q5OXuxfeklg';
+    const urlParams = new URLSearchParams(window.location.search);
+    const SHEET_ID = urlParams.get('sheet') || '12i7W1O8MJ_5WljO2g3tcPPWE_eTsWHQ5q5OXuxfeklg';
     const SHEET_NAME = 'Sheet1';
     const API_URL    = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_NAME}`;
 
