@@ -154,11 +154,13 @@
         }
 
         /* Info rows (no border) */
-        .info-row-mini { background: transparent !important; border: none !important; box-shadow: none !important; margin-bottom: 2px !important; }
-        .info-row-mini .expand-header { padding: 4px 0 !important; cursor: default; }
-        .info-row-mini .expand-title  { flex: none !important; font-size: 14px; }
-        .info-row-mini .expand-content { border-top: none !important; padding: 0 !important; font-size: 14px; }
-
+        /* ใหม่ */
+        .info-row-mini { background: transparent !important; border: none !important; box-shadow: none !important; margin-bottom: 0 !important; }
+        .info-row-mini .expand-header { padding: 10px 0 !important; cursor: default; border-bottom: 1px solid var(--cream-dark); align-items: flex-start; overflow: hidden; }
+        .info-row-mini:last-child .expand-header { border-bottom: none; }
+        .info-row-mini .expand-icon { margin-top: 2px; }
+        .info-row-mini .info-key { flex-shrink: 0; width: 72px; font-size: 13px; font-weight: 600; color: var(--text-soft); }
+        .info-row-mini .info-val { font-size: 13px; color: var(--text-mid); line-height: 1.6; min-width: 0; flex: 1; word-break: break-word; overflow-wrap: break-word; }
         .warning-box {
             background: #fef8ec;
             border: 1.5px solid #f2c97e;
@@ -213,29 +215,29 @@
             <div class="expand-row info-row-mini">
                 <div class="expand-header">
                     <span class="expand-icon">☀️</span>
-                    <span class="expand-title" style="flex:none;">แสงแดด :</span>
-                    <span class="expand-content" id="p-sunlight"></span>
+                    <span class="info-key">แสงแดด :</span>
+                    <span class="info-val" id="p-sunlight"></span>
                 </div>
             </div>
             <div class="expand-row info-row-mini">
                 <div class="expand-header">
                     <span class="expand-icon">💧</span>
-                    <span class="expand-title" style="flex:none;">รดน้ำ :</span>
-                    <span class="expand-content" id="p-water"></span>
+                    <span class="info-key">รดน้ำ :</span>
+                    <span class="info-val" id="p-water"></span>
                 </div>
             </div>
             <div class="expand-row info-row-mini">
                 <div class="expand-header">
                     <span class="expand-icon">🌡</span>
-                    <span class="expand-title" style="flex:none;">อากาศ :</span>
-                    <span class="expand-content" id="p-temp"></span>
+                    <span class="info-key">อากาศ :</span>
+                    <span class="info-val" id="p-temp"></span>
                 </div>
             </div>
             <div class="expand-row info-row-mini">
                 <div class="expand-header">
                     <span class="expand-icon">🌱</span>
-                    <span class="expand-title" style="flex:none;">ปุ๋ย :</span>
-                    <span class="expand-content" id="p-fertilizer"></span>
+                    <span class="info-key">ปุ๋ย :</span>
+                    <span class="info-val" id="p-fertilizer"></span>
                 </div>
             </div>
         </div>
