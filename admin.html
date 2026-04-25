@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>GreenHub Admin</title>
+<title>Genius Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,19 +22,48 @@
     --shadow: 0 2px 16px rgba(0,167,157,0.10);
 }
 
-html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto Sans Thai', sans-serif; color: var(--text-dark); }
-
 .topbar {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(255,255,255,0.93);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--cream-dark);
     padding: 14px 20px;
-    display: flex; align-items: center; gap: 10px;
+    display: flex;
+    align-items: center;
 }
-.topbar-brand { font-family: 'Noto Serif Thai', serif; font-size: 16px; font-weight: 600; color: var(--teal-deep); }
 
-.main-content { padding: 24px 20px 60px; max-width: 600px; margin: 0 auto; }
+.topbar-brand {
+    font-family: 'Noto Serif Thai', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--teal-deep);
+    letter-spacing: 0.5px;
+}
+
+html { 
+    min-height: 100vh; 
+    background-color: var(--cream); 
+}
+
+body { 
+    min-height: 100vh; 
+    font-family: 'Noto Sans Thai', sans-serif; 
+    color: var(--text-dark);
+    margin: 0;
+    background: transparent !important;
+}
+
+
+
+.main-content { 
+    position: relative; 
+    z-index: 10;
+    padding: 24px 20px 60px; 
+    max-width: 600px; 
+    margin: 0 auto; 
+}
 
 .section-title { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; margin-top: 28px; }
 
@@ -65,6 +94,7 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
 }
 .btn-load:hover  { background: var(--teal-deep); }
 .btn-load:active { transform: scale(0.98); }
+.btn-load:disabled { background: var(--teal-light); cursor: not-allowed; }
 
 .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-right: 6px; vertical-align: middle; }
 .status-dot.ok  { background: #27ae60; }
@@ -79,6 +109,24 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
 }
 .hint-box b { color: var(--teal-deep); }
 .hint-box code { background: rgba(0,167,157,0.12); border-radius: 4px; padding: 1px 5px; font-size: 12px; }
+
+
+
+.list-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.list-toolbar-count { font-size: 13px; color: var(--text-soft); }
+
+.btn-copy-all {
+    padding: 9px 16px; border-radius: 12px;
+    background: var(--teal-deep); color: #fff; border: none;
+    font-size: 13px; font-weight: 600; font-family: 'Noto Sans Thai', sans-serif;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
+    display: flex; align-items: center; gap: 6px;
+}
+.btn-copy-all:hover  { background: #005f58; }
+.btn-copy-all:active { transform: scale(0.97); }
+.btn-copy-all.copied { background: #27ae60; }
+
+.copy-all-hint { font-size: 11px; color: var(--text-soft); margin-top: 6px; text-align: right; }
 
 .plant-list { display: flex; flex-direction: column; gap: 8px; }
 
@@ -121,6 +169,31 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
     background: var(--cream); border-radius: 8px; padding: 8px 10px;
     word-break: break-all; line-height: 1.6;
     border: 1px solid var(--cream-dark);
+    display: flex; align-items: flex-start; gap: 8px;
+}
+.plant-url-label {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    padding-top: 1px;
+}
+.plant-url-text { word-break: break-all; }
+
+/* badge short URL */
+.short-badge {
+    display: inline-block;
+    background: var(--teal);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 5px;
+    padding: 2px 6px;
+    margin-right: 4px;
+    vertical-align: middle;
 }
 
 .empty-state { text-align: center; padding: 48px 20px; color: var(--text-soft); font-size: 14px; line-height: 1.8; }
@@ -132,7 +205,6 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
 <body>
 
 <div class="topbar">
-    <span></span>
     <span class="topbar-brand">Genius Admin</span>
 </div>
 
@@ -145,21 +217,34 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
             <input class="field-input" type="text" id="sheetIdInput"
                 placeholder="วาง Sheet ID หรือ URL ของ Google Sheet"
                 onkeydown="if(event.key==='Enter') loadSheet()">
-            <button class="btn-load" onclick="loadSheet()">โหลด</button>
+            <button class="btn-load" id="btnLoad" onclick="loadSheet()">โหลด</button>
         </div>
         <div class="status-text" id="statusText"></div>
+
         <div class="hint-box">
             <b>วิธีหา Sheet ID</b><br>
             เปิด Google Sheet → ดูที่ URL แถบบน<br>
             <code>docs.google.com/spreadsheets/d/<b>[ ID อยู่ตรงนี้ ]</b>/edit</code><br><br>
-            <b>⚠️ สำคัญ</b> — Sheet ต้องตั้งการแชร์เป็น <b>Anyone with the link → Viewer</b>
+            <b>⚠️ สำคัญ</b> — Sheet ต้องตั้งการแชร์เป็น <b>Anyone with the link → Viewer</b><br><br>
+            <b>🔗 Short URL</b> — ระบบจะย่อลิงค์ทุกอันอัตโนมัติด้วย is.gd
         </div>
     </div>
 
     <p class="section-title">รายการต้นไม้</p>
+
+    <div id="listToolbar" style="display:none;">
+        <div class="list-toolbar">
+            <span class="list-toolbar-count" id="plantCount"></span>
+            <button class="btn-copy-all" id="btnCopyAll" onclick="copyAllLinks()">
+                📋 คัดลอกลิงค์ทั้งหมด
+            </button>
+        </div>
+        <div class="copy-all-hint">คัดลอกแล้ว paste ใน Google Sheet ได้เลย (2 คอลัมน์: ชื่อ | ลิงค์สั้น)</div>
+    </div>
+
     <div class="plant-list" id="plantList">
         <div class="empty-state">
-            <div class="empty-icon">🪴</div>
+            <div class="empty-icon">🔍</div>
             กรอก Sheet ID แล้วกด <b>โหลด</b><br>เพื่อดูรายการต้นไม้ทั้งหมด
         </div>
     </div>
@@ -167,14 +252,48 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
 </div>
 
 <script>
-    /* ── เปลี่ยนตรงนี้เมื่อได้ URL จริงจาก Cloudflare ── */
-    const SITE_URL = 'https://solutiontree.pages.dev'; // ← เปลี่ยนเป็น URL จริง
+    /* ── แก้ตรงนี้ 1 จุด: ใส่ URL จริงจาก Cloudflare Pages ── */
+    const SITE_URL   = 'https://solutiontree-1w7.pages.dev';
+
+    /* ── แก้ถ้าชื่อ tab ใน Google Sheet ไม่ใช่ Sheet1 ── */
     const SHEET_NAME = 'Sheet1';
+
+    let allLinks = [];
 
     function extractSheetId(input) {
         input = input.trim();
         const m = input.match(/\/spreadsheets\/d\/([^\/\?&]+)/);
         return m ? m[1] : input;
+    }
+
+    /* ── ฟังก์ชันย่อ URL ผ่าน Cloudflare Worker → is.gd ── */
+    async function shortenUrl(longUrl) {
+        try {
+            const res = await fetch(
+                `https://url-shortener-proxy.sale-85f.workers.dev?url=${encodeURIComponent(longUrl)}`
+            );
+            if (!res.ok) throw new Error();
+            const short = await res.text();
+            if (short.startsWith('http')) return short.trim();
+            throw new Error('invalid response');
+        } catch (e) {
+            return longUrl;
+        }
+    }
+
+    /* ── ย่อ URL ทีละตัว (sequential) เพื่อไม่โดน is.gd rate limit ── */
+    async function shortenAll(items, statusEl) {
+        const results = [];
+        const total = items.length;
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            statusEl.innerHTML = `<span class="status-dot ok"></span>กำลังย่อลิงค์ ${i + 1}/${total}...`;
+            const short = await shortenUrl(item.url);
+            results.push({ ...item, shortUrl: short });
+            // หน่วง 300ms ระหว่าง request เพื่อไม่โดน rate limit
+            if (i < items.length - 1) await new Promise(r => setTimeout(r, 300));
+        }
+        return results;
     }
 
     async function loadSheet() {
@@ -186,7 +305,13 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
 
         const statusEl = document.getElementById('statusText');
         const listEl   = document.getElementById('plantList');
+        const btnLoad  = document.getElementById('btnLoad');
 
+        document.getElementById('listToolbar').style.display = 'none';
+        allLinks = [];
+
+        btnLoad.disabled = true;
+        btnLoad.textContent = 'กำลังโหลด...';
         statusEl.innerHTML = '<span class="status-dot"></span>กำลังโหลด...';
         listEl.innerHTML   = '<div class="empty-state"><div class="empty-icon">⏳</div>กำลังดึงข้อมูล...</div>';
 
@@ -196,44 +321,74 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
             const data = await res.json();
             if (!Array.isArray(data) || !data.length) throw new Error();
 
-            statusEl.innerHTML = `<span class="status-dot ok"></span>โหลดสำเร็จ — พบ <b>${data.length}</b> ต้นไม้`;
-            renderPlants(data, id);
+            statusEl.innerHTML = `<span class="status-dot ok"></span>โหลดสำเร็จ — พบ <b>${data.length}</b> ต้นไม้ กำลังย่อลิงค์...`;
+
+            // ── สร้าง long URL ก่อน แล้วค่อยย่อทั้งหมด ──
+            const rawItems = data
+                .filter(plant => (plant.name_th || '').trim())
+                .map(plant => ({
+                    plant,
+                    name: (plant.name_th || '').trim(),
+                    url: `${SITE_URL}/?sheet=${id}&name=${encodeURIComponent((plant.name_th || '').trim())}`
+                }));
+
+            // ย่อ URL ทีละตัว (sequential)
+            const shortened = await shortenAll(rawItems, statusEl);
+
+            statusEl.innerHTML = `<span class="status-dot ok"></span>โหลดสำเร็จ — พบ <b>${shortened.length}</b> ต้นไม้`;
+
+            renderPlants(shortened);
+
         } catch(e) {
             statusEl.innerHTML = '<span class="status-dot err"></span>โหลดไม่สำเร็จ — ตรวจสอบ Sheet ID และการตั้งค่าการแชร์';
             listEl.innerHTML   = '<div class="empty-state"><div class="empty-icon">❌</div>ไม่สามารถดึงข้อมูลได้<br><br>ตรวจสอบว่า Sheet ตั้งเป็น <b>Anyone with the link can view</b></div>';
+        } finally {
+            btnLoad.disabled = false;
+            btnLoad.textContent = 'โหลด';
         }
     }
 
-    function renderPlants(data, sheetId) {
+    function renderPlants(items) {
         const listEl = document.getElementById('plantList');
         listEl.innerHTML = '';
+        allLinks = [];
 
-        data.forEach((plant, i) => {
-            const name = (plant.name || plant.Name || '').trim();
-            if (!name) return;
+        items.forEach(({ plant, name, url, shortUrl }, i) => {
+            const name_eng = (plant.name_eng || '').trim();
+            const displayUrl = shortUrl || url;
 
-            const url = `${SITE_URL}/?sheet=${sheetId}&name=${encodeURIComponent(name)}`;
+            allLinks.push({ name, url: displayUrl });
 
             const card = document.createElement('div');
             card.className = 'plant-card';
             card.style.animationDelay = `${i * 0.05}s`;
 
-            const safeUrl = url.replace(/`/g, '%60');
+            const safeUrl = displayUrl.replace(/`/g, '%60');
+            const isShortened = shortUrl && shortUrl !== url;
+
             card.innerHTML = `
                 <div class="plant-card-top">
                     <div>
                         <div class="plant-card-name">🌱 ${name}</div>
-                        <div class="plant-card-sub">${plant.sunlight || '—'}</div>
+                        <div class="plant-card-sub">${name_eng || plant.sunlight || '—'}</div>
                     </div>
                     <div class="btn-group">
                         <a class="btn-preview" href="${url}" target="_blank" rel="noopener">ดูตัวอย่าง</a>
                         <button class="btn-copy" data-url="${safeUrl}" onclick="copyLink(this)">คัดลอก</button>
                     </div>
                 </div>
-                <div class="plant-url">${url}</div>
+                <div class="plant-url">
+                    <span class="plant-url-label">${isShortened ? '🔗 Short' : 'URL'}</span>
+                    <span class="plant-url-text">${displayUrl}</span>
+                </div>
             `;
             listEl.appendChild(card);
         });
+
+        if (items.length > 0) {
+            document.getElementById('listToolbar').style.display = 'block';
+            document.getElementById('plantCount').textContent = `พบทั้งหมด ${items.length} ต้นไม้`;
+        }
     }
 
     function copyLink(btn) {
@@ -242,6 +397,21 @@ html, body { min-height: 100vh; background: var(--cream); font-family: 'Noto San
             btn.textContent = '✓ คัดลอกแล้ว';
             btn.classList.add('copied');
             setTimeout(() => { btn.textContent = 'คัดลอก'; btn.classList.remove('copied'); }, 2000);
+        });
+    }
+
+    function copyAllLinks() {
+        if (!allLinks.length) return;
+        // Tab-separated: ชื่อ [Tab] Short URL → paste ลง Google Sheet ได้เลย 2 คอลัมน์
+        const tsv = allLinks.map(r => `${r.name}\t${r.url}`).join('\n');
+        navigator.clipboard.writeText(tsv).then(() => {
+            const btn = document.getElementById('btnCopyAll');
+            btn.textContent = '✓ คัดลอกแล้ว ' + allLinks.length + ' รายการ';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerHTML = '📋 คัดลอกลิงค์ทั้งหมด';
+                btn.classList.remove('copied');
+            }, 3000);
         });
     }
 </script>
